@@ -1,0 +1,57 @@
+ARG CUDA="11.4.3"
+ARG CUDNN="8"
+ARG TAG="devel"
+ARG OS="ubuntu20.04"
+FROM nvidia/cuda:${CUDA}-cudnn${CUDNN}-${TAG}-${OS}
+
+RUN apt-get update && \
+    apt-get install -y \
+    git \
+    vim \
+    htop \
+    wget 
+# rm -rf /var/lib/apt/lists/*
+
+# install miniforge
+RUN wget https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh -O /tmp/miniconda.sh
+RUN /bin/bash /tmp/miniconda.sh -b -p /opt/conda && \
+    rm /tmp/miniconda.sh && \
+    echo "export PATH=/opt/conda/bin:$PATH" > /etc/profile.d/conda.sh
+ENV PATH /opt/conda/bin:$PATH
+
+RUN conda --version
+
+
+# install python3.10
+# RUN DEBIAN_FRONTEND=noninteractive apt-get install -y tzdata
+# RUN apt-get update && \
+#     apt-get install -y software-properties-common && \
+#     add-apt-repository ppa:deadsnakes/ppa && \
+#     apt-get update && \
+#     apt-get install -y python3.10 python3.10-pip
+
+# RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
+
+ARG USER_ID=1000
+ARG GROUP_ID=1000
+ARG NAME=username
+RUN groupadd --gid $GROUP_ID $NAME
+RUN useradd \
+    --no-log-init \
+    --create-home \
+    --uid $USER_ID \
+    --gid $GROUP_ID \
+    -s /bin/sh $NAME
+
+ARG WORKDIR_PATH=/workspace
+WORKDIR $WORKDIR_PATH
+
+ARG JAX_CUDA_CUDNN="cuda"
+
+RUN python3 -m pip install --upgrade pip && \
+    python3 -m pip install "jax[$JAX_CUDA_CUDNN]==0.4.20" \
+    -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+
+
+
+

@@ -1,0 +1,25 @@
+{
+    "dockerFile": "Dockerfile.jax",
+    "runArgs": [
+        "--network=host",
+        "--gpus",
+        "all"
+    ],
+    "features": {
+        "ghcr.io/devcontainers/features/github-cli:1": {
+            "version": "latest"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "ms-python.python",
+                "ms-python.autopep8",
+                "mhutchie.git-graph"
+            ]
+        }
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": "cd /workspace/octo && pip install -e . && pip install -r requirements.txt"
+}
