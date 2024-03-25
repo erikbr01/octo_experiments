@@ -1,4 +1,4 @@
-ARG CUDA="11.4.3"
+ARG CUDA="11.8.0"
 ARG CUDNN="8"
 ARG TAG="devel"
 ARG OS="ubuntu20.04"
@@ -10,6 +10,8 @@ RUN apt-get update && \
     vim \
     htop \
     wget 
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 # rm -rf /var/lib/apt/lists/*
 
 # install miniforge
