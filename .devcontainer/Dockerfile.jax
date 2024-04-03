@@ -11,6 +11,7 @@ RUN apt-get update && \
     htop \
     wget 
 
+RUN DEBIAN_FRONTEND=noninteractive TZ=Etc/UTC apt-get -y install tzdata
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install ffmpeg libsm6 libxext6  -y
 # rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +49,7 @@ RUN useradd \
 ARG WORKDIR_PATH=/workspace
 WORKDIR $WORKDIR_PATH
 
-ARG JAX_CUDA_CUDNN="cuda"
+ARG JAX_CUDA_CUDNN="cuda11_cudnn86"
 
 RUN python3 -m pip install --upgrade pip && \
     python3 -m pip install "jax[$JAX_CUDA_CUDNN]==0.4.20" \

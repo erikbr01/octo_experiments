@@ -1,9 +1,31 @@
 # Octo Experiments
 
-This repository holds code for a GPU-powered dev container environment with the Octo model and some code to experiment around with the model.
+This is a repository for some experiments with the Octo model. 
 
 ## Setup
 
-Enter VS Code and open this repository. Install the Dev Containers extension (and Docker + Nvidia Container Toolkit in case it is not installed). Then, simply open the workspace as dev container. 
+```bash
+mamba create -n octo python=3.10
+mamba activate octo
+python -m pip install tensorflow[and-cuda]==2.14.0
+python -c "import tensorflow as tf; print(tf.config.list_physical_devices('GPU'))"
 
-Once setup has finished, you can test the installation by using the demo finetuning script from Octo. Be aware that in the beginning, some warnings are triggered from tensorflow - this seems to be ok, as tensorflow seems to be mainly used for data preprocessing and data loading using CPU operations.
+mamba install cudnn=8.8 cuda-version=11.8
+pip install --upgrade "jax[cuda11_pip]==0.4.20" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+```
+
+Some warnings and even errors from Tensorflow seem to be normal and acceptable, see also [this article](https://medium.com/@dev-charodeyka/tensorflow-conda-nvidia-gpu-on-ubuntu-22-04-3-lts-ad61c1d9ee32). In Octo, Tensorflow is mainly used for dataloading, not for the model themselves. 
+
+Verify GPU support in JAX is working:
+```python
+from jax.lib import xla_bridge
+print(xla_bridge.get_backend().platform)
+```
+
+Then, go on to install the other requirements:
+
+```bash
+cd octo
+pip install -e .
+pip install -r requirements.txt
+```
