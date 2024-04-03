@@ -4,6 +4,8 @@ This is a repository for some experiments with the Octo model.
 
 ## Setup
 
+These steps have to be undertaken in `bash` since shells like `zsh` try to match on square brackets.
+
 ```bash
 mamba create -n octo python=3.10
 mamba activate octo
