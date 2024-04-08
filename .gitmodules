@@ -1,3 +1,9 @@
 [submodule "octo"]
 	path = octo
 	url = https://github.com/erikbr01/octo
+[submodule "rlds_dataset_builder"]
+	path = rlds_dataset_builder
+	url = git@github.com:erikbr01/rlds_dataset_builder.git
+[submodule "dexformer"]
+	path = dexformer
+	url = git@github.com:srl-ethz/dexformer.git
